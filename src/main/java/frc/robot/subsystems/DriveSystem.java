@@ -8,8 +8,11 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSystem extends SubsystemBase {
@@ -28,7 +31,6 @@ public class DriveSystem extends SubsystemBase {
   private double speedMultiplier;
 
 
-
   /** Creates a new DriveSystem. */
   public DriveSystem() {
 
@@ -43,6 +45,7 @@ public class DriveSystem extends SubsystemBase {
     leftMotorGroup.setInverted(true);
 
     drive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
+
     speedMultiplier = 0.8;
   }
 
@@ -55,6 +58,20 @@ public class DriveSystem extends SubsystemBase {
 
   }
   
+  private void setSpeedMultiplier(Double mult){
+
+    speedMultiplier = mult;
+  }
+
+  @Override
+  public void initSendable(SendableBuilder builder){
+    builder.addDoubleProperty(
+      "Speed Multiplier", 
+      () -> speedMultiplier, 
+      (double mult) -> {speedMultiplier = mult;}
+    );
+  }
+
 
   @Override
   public void periodic() {

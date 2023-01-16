@@ -51,16 +51,11 @@ public class DriveSystem extends SubsystemBase {
 
   public void drive(double leftSpeed, double rightSpeed){
 
-    double leftVelocity = leftSpeed;
-    double rightVelocity = rightSpeed;
+    double leftVelocity = leftSpeed * speedMultiplier;
+    double rightVelocity = rightSpeed * speedMultiplier;
 
     drive.tankDrive(leftVelocity, rightVelocity);
 
-  }
-  
-  private void setSpeedMultiplier(Double mult){
-
-    speedMultiplier = mult;
   }
 
   @Override

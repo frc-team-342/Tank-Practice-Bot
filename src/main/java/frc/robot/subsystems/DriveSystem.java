@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -17,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSystem extends SubsystemBase {
 
+  private AHRS navX;
   
   private WPI_TalonSRX motorLeftOne;
   private WPI_TalonSRX motorLeftTwo;
@@ -42,6 +45,8 @@ public class DriveSystem extends SubsystemBase {
     motorRightTwo = new WPI_TalonSRX(4);
     rightMotorGroup = new MotorControllerGroup(motorRightOne, motorRightTwo);
 
+    navX = new AHRS();
+
     leftMotorGroup.setInverted(true);
 
     drive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
@@ -56,6 +61,24 @@ public class DriveSystem extends SubsystemBase {
 
     drive.tankDrive(leftVelocity, rightVelocity);
 
+  }
+
+  public void autoBalance(){
+    double ratio = 0.2;
+    double angle = navX.getAngle();
+    double speed = angle * ratio;
+
+    if (angle > 0) {
+      drive(speed, speed);
+    } 
+    else if(angle < 0) {
+      drive(-speed, -speed);
+    }
+    else{
+      drive(0,0);
+    }
+  
+    
   }
 
   @Override

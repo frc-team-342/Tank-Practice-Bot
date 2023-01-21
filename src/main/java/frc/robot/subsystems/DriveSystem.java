@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -13,10 +15,12 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSystem extends SubsystemBase {
 
+  private AHRS navX;
   
   private WPI_TalonSRX motorLeftOne;
   private WPI_TalonSRX motorLeftTwo;
@@ -42,6 +46,8 @@ public class DriveSystem extends SubsystemBase {
     motorRightTwo = new WPI_TalonSRX(4);
     rightMotorGroup = new MotorControllerGroup(motorRightOne, motorRightTwo);
 
+    navX = new AHRS();
+
     leftMotorGroup.setInverted(true);
 
     drive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
@@ -55,6 +61,59 @@ public class DriveSystem extends SubsystemBase {
     double rightVelocity = rightSpeed * speedMultiplier;
 
     drive.tankDrive(leftVelocity, rightVelocity);
+
+  }
+
+  public CommandBase autoBalance(){
+
+
+    return runEnd(
+
+      //what it do when it run
+
+      () -> {
+
+        double speedScale = 15;
+        double angle = -navX.getRoll();//negative because of robot orientation
+        double angleRatio = angle / 360; //360 degrees
+        double speed = angleRatio * speedScale;
+        if (speed > 1){
+
+          speed = 1;
+
+        }
+        else if (speed < -1){
+          speed = -1;
+        }
+        
+        double tolerance = 3;
+        //Add a variable called "tolerance" in degrees
+
+        //Change the logig of oyur if statement to say if the angle is inside tolerance, don't move, otherwise move.
+
+        System.out.println(angle);
+        System.out.println(speed);
+
+        if (angle < tolerance && angle > -tolerance) {
+            drive(0, 0);
+        } 
+        else {
+          drive(speed, speed);
+        }
+
+      },
+
+
+      //wha5 it do when it end
+      () -> {
+        drive(0, 0);
+
+      }
+
+    );
+
+   
+  
 
   }
 

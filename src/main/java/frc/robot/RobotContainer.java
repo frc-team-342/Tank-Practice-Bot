@@ -12,7 +12,10 @@ import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -26,6 +29,10 @@ public class RobotContainer {
   private DriveSystem drive;
   private DriveWithJoysticks driveWithJoysticks;
 
+  private Command autoLevel;
+
+  private JoystickButton trigger;
+
   private Joystick leftJoy;
   private Joystick rightJoy;
 
@@ -36,8 +43,12 @@ public class RobotContainer {
     leftJoy = new Joystick(Constants.OperatorConstants.joyLeftPort);
     rightJoy = new Joystick(Constants.OperatorConstants.joyRightPort);
 
+    trigger = new JoystickButton(leftJoy, Constants.OperatorConstants.AUTO_LEVEL_BUTTON);
+
     driveWithJoysticks = new DriveWithJoysticks(drive, leftJoy, rightJoy);
     drive.setDefaultCommand(driveWithJoysticks);
+
+    autoLevel = new RepeatCommand(drive.autoBalance());
 
     SmartDashboard.putData(drive);
 
@@ -55,7 +66,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-
+      trigger.whileTrue(autoLevel);
   }
 
   /**

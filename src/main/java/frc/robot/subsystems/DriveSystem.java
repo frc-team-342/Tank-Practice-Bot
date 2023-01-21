@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSystem extends SubsystemBase {
@@ -63,22 +64,57 @@ public class DriveSystem extends SubsystemBase {
 
   }
 
-  public void autoBalance(){
-    double ratio = 0.2;
-    double angle = navX.getAngle();
-    double speed = angle * ratio;
+  public CommandBase autoBalance(){
 
-    if (angle > 0) {
-      drive(speed, speed);
-    } 
-    else if(angle < 0) {
-      drive(-speed, -speed);
-    }
-    else{
-      drive(0,0);
-    }
+
+    return runEnd(
+
+      //what it do when it run
+
+      () -> {
+
+        double speedScale = 15;
+        double angle = -navX.getRoll();//negative because of robot orientation
+        double angleRatio = angle / 360; //360 degrees
+        double speed = angleRatio * speedScale;
+        if (speed > 1){
+
+          speed = 1;
+
+        }
+        else if (speed < -1){
+          speed = -1;
+        }
+        
+        double tolerance = 3;
+        //Add a variable called "tolerance" in degrees
+
+        //Change the logig of oyur if statement to say if the angle is inside tolerance, don't move, otherwise move.
+
+        System.out.println(angle);
+        System.out.println(speed);
+
+        if (angle < tolerance && angle > -tolerance) {
+            drive(0, 0);
+        } 
+        else {
+          drive(speed, speed);
+        }
+
+      },
+
+
+      //wha5 it do when it end
+      () -> {
+        drive(0, 0);
+
+      }
+
+    );
+
+   
   
-    
+
   }
 
   @Override

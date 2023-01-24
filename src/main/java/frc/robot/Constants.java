@@ -19,5 +19,7 @@ public final class Constants {
     public static final int joyLeftPort = 0;
     public static final int joyRightPort = 1;
     public static final int AUTO_LEVEL_BUTTON = 1;
+    public static final double PERCENT = 0.50;
+    public static final double SECS = 1.5;
   }
 }

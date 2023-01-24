@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class DriveSystem extends SubsystemBase {
 
   private AHRS navX;
-  
+
   private WPI_TalonSRX motorLeftOne;
   private WPI_TalonSRX motorLeftTwo;
   private MotorControllerGroup leftMotorGroup;

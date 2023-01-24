@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.DriveWithJoysticks;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.TimedDrive;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.Joystick;
@@ -31,6 +32,9 @@ public class RobotContainer {
 
   private Command autoLevel;
 
+  private Command timedDriveCommand;
+  private TimedDrive timedDrive;
+
   private JoystickButton trigger;
 
   private Joystick leftJoy;
@@ -49,6 +53,7 @@ public class RobotContainer {
     drive.setDefaultCommand(driveWithJoysticks);
 
     autoLevel = new RepeatCommand(drive.autoBalance());
+    timedDriveCommand = new TimedDrive(drive, 0.50, 1.5);
 
     SmartDashboard.putData(drive);
 
@@ -76,6 +81,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     
-    return null;
+    return timedDriveCommand;
   }
 }

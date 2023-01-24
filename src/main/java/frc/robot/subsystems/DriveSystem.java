@@ -69,22 +69,15 @@ public class DriveSystem extends SubsystemBase {
 
     return runEnd(
 
-      //what it do when it run
+      // what it do when it run
 
       () -> {
 
-        double speedScale = 15;
-        double angle = -navX.getRoll();//negative because of robot orientation
-        double angleRatio = angle / 360; //360 degrees
-        double speed = angleRatio * speedScale;
-        if (speed > 1){
-
-          speed = 1;
-
-        }
-        else if (speed < -1){
-          speed = -1;
-        }
+        double maxPercentOutput = 0.75;
+        double angle = -navX.getRoll(); // Negative because of robot orientation
+        double maxAngle = 15;
+        double speed = (angle / maxAngle) * maxPercentOutput; // Speed is proportional to the angle
+       
         
         double tolerance = 3;
         //Add a variable called "tolerance" in degrees
@@ -104,7 +97,7 @@ public class DriveSystem extends SubsystemBase {
       },
 
 
-      //wha5 it do when it end
+      //what it do when it end
       () -> {
         drive(0, 0);
 

@@ -70,7 +70,6 @@ public class DriveSystem extends SubsystemBase {
     return runEnd(
 
       // what it do when it run
-
       () -> {
 
         double maxPercentOutput = 0.75;
@@ -96,18 +95,12 @@ public class DriveSystem extends SubsystemBase {
 
       },
 
-
       //what it do when it end
       () -> {
         drive(0, 0);
-
       }
 
     );
-
-   
-  
-
   }
 
   @Override
@@ -118,7 +111,6 @@ public class DriveSystem extends SubsystemBase {
       (double mult) -> {speedMultiplier = mult;}
     );
   }
-
 
   @Override
   public void periodic() {

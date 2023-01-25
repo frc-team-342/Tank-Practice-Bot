@@ -72,19 +72,26 @@ public class DriveSystem extends SubsystemBase {
       // what it do when it run
       () -> {
 
-        double maxPercentOutput = 0.75;
+        double maxPercentOutput = 0.85;
         double angle = -navX.getRoll(); // Negative because of robot orientation
-        double maxAngle = 15;
+        double maxAngle = 20;
         double speed = (angle / maxAngle) * maxPercentOutput; // Speed is proportional to the angle
        
+        if (speed > 1) {
+          speed = 1;
+        }
+        
+        if (speed < -1) {
+          speed = -1;
+        }
         
         double tolerance = 3;
         //Add a variable called "tolerance" in degrees
 
         //Change the logig of oyur if statement to say if the angle is inside tolerance, don't move, otherwise move.
 
-        System.out.println(angle);
-        System.out.println(speed);
+        System.out.println("Angle: " + angle);
+        System.out.println("Speed: " + speed);
 
         if (angle < tolerance && angle > -tolerance) {
             drive(0, 0);

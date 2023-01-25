@@ -32,6 +32,8 @@ public class DriveSystem extends SubsystemBase {
 
   private final DifferentialDrive drive;
 
+  private double angle;
+
   private double speedMultiplier;
 
 
@@ -51,6 +53,8 @@ public class DriveSystem extends SubsystemBase {
     leftMotorGroup.setInverted(true);
 
     drive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
+
+    angle = 0.0;
 
     speedMultiplier = 0.8;
   }
@@ -73,7 +77,7 @@ public class DriveSystem extends SubsystemBase {
       () -> {
 
         double maxPercentOutput = 0.85;
-        double angle = -navX.getRoll(); // Negative because of robot orientation
+        angle = -navX.getRoll(); // Negative because of robot orientation
         double maxAngle = 20;
         double speed = (angle / maxAngle) * maxPercentOutput; // Speed is proportional to the angle
        
@@ -110,6 +114,11 @@ public class DriveSystem extends SubsystemBase {
     );
   }
 
+  private double getAngle(){
+    
+    return angle;
+  }
+
   @Override
   public void initSendable(SendableBuilder builder){
     builder.addDoubleProperty(
@@ -117,6 +126,7 @@ public class DriveSystem extends SubsystemBase {
       () -> speedMultiplier, 
       (double mult) -> {speedMultiplier = mult;}
     );
+    builder.addDoubleProperty("Robot Angle", this::getAngle, null);
   }
 
   @Override

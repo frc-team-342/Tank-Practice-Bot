@@ -4,25 +4,19 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.DriveSystem;
 
-public class DriveWithJoysticks extends CommandBase {
+public class ManualDrive extends CommandBase {
 
   private DriveSystem drive;
-  private Joystick joyLeft;
-  private Joystick joyRight;
-  
+  private double velocity;
 
-  /** Creates a new DriveWithJoysticks. */
-  public DriveWithJoysticks(DriveSystem drive, Joystick joyLeft, Joystick joyRight) {
+  /** Creates a new ManualDrive. */
+  public ManualDrive(DriveSystem drive, double velocity) {
 
-    this.drive = drive;
-    this.joyLeft = new Joystick(Constants.OperatorConstants.joyLeftPort);
-    this.joyRight = new Joystick(Constants.OperatorConstants.joyRightPort);
+    drive = this.drive;
+    velocity = this.velocity;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drive);
@@ -30,25 +24,21 @@ public class DriveWithJoysticks extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-    double leftDeadband = MathUtil.applyDeadband(joyLeft.getY(), 0.15);
-    double rightDeadband = MathUtil.applyDeadband(joyRight.getY(), 0.15);
+    drive.drive(velocity, velocity);
 
-    drive.drive(leftDeadband, rightDeadband);
-    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    drive.drive(0, 0);
+    
+    drive.drive(0,0);
   }
 
   // Returns true when the command should end.

@@ -86,8 +86,9 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    SequentialCommandGroup commandGroupAuto = new SequentialCommandGroup(timedDriveCommand, autoLevel);
+      
+    return commandGroupAuto;
     
-    //return new SequentialCommandGroup(timedDrive);
-    return manualDriveCommand;
   }
 }

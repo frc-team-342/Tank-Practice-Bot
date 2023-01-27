@@ -59,7 +59,6 @@ public class RobotContainer {
     autoLevel = new RepeatCommand(drive.autoBalance());
     timedDriveCommand = new TimedDrive(drive, Constants.OperatorConstants.PERCENT, Constants.OperatorConstants.SECS);
 
-    manualDriveCommand = new ManualDrive(drive, 0.8);
 
     SmartDashboard.putData(drive);
 
@@ -86,7 +85,12 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    SequentialCommandGroup commandGroupAuto = new SequentialCommandGroup(timedDriveCommand, autoLevel);
+    SequentialCommandGroup commandGroupAuto = 
+    new SequentialCommandGroup(
+      timedDriveCommand, 
+      autoLevel.
+      withTimeout(10).
+      until(() -> drive.balanced()));
       
     return commandGroupAuto;
     

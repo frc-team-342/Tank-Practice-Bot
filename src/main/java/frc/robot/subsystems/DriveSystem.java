@@ -32,13 +32,13 @@ public class DriveSystem extends SubsystemBase {
 
   private final DifferentialDrive drive;
 
-  private double angle;
-
   private double speedMultiplier;
-
+  private boolean isBalanced; 
 
   /** Creates a new DriveSystem. */
   public DriveSystem() {
+
+    isBalanced = false;
 
     motorLeftOne = new WPI_TalonSRX(1);
     motorLeftTwo = new WPI_TalonSRX(2);
@@ -54,8 +54,6 @@ public class DriveSystem extends SubsystemBase {
 
     drive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
 
-    angle = 0.0;
-
     speedMultiplier = 0.8;
   }
 
@@ -68,6 +66,11 @@ public class DriveSystem extends SubsystemBase {
 
   }
 
+  public boolean balanced(){
+
+    return isBalanced;
+  }
+
   public CommandBase autoBalance(){
 
 
@@ -77,7 +80,7 @@ public class DriveSystem extends SubsystemBase {
       () -> {
 
         double maxPercentOutput = 0.85;
-        angle = -navX.getRoll(); // Negative because of robot orientation
+        double angle = -navX.getRoll(); // Negative because of robot orientation
         double maxAngle = 20;
         double speed = (angle / maxAngle) * maxPercentOutput; // Speed is proportional to the angle
        
@@ -99,6 +102,7 @@ public class DriveSystem extends SubsystemBase {
 
         if (angle < tolerance && angle > -tolerance) {
             drive(0, 0);
+            isBalanced = true;
         } 
         else {
           drive(speed, speed);
@@ -114,9 +118,10 @@ public class DriveSystem extends SubsystemBase {
     );
   }
 
-  private double getAngle(){
-    
-    return angle;
+  public void rotateToAngle() {
+
+
+
   }
 
   @Override
@@ -126,7 +131,6 @@ public class DriveSystem extends SubsystemBase {
       () -> speedMultiplier, 
       (double mult) -> {speedMultiplier = mult;}
     );
-    builder.addDoubleProperty("Robot Angle", this::getAngle, null);
   }
 
   @Override

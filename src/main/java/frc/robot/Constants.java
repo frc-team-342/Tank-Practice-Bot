@@ -15,6 +15,14 @@ import edu.wpi.first.wpilibj.XboxController;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+  public static class FieldConstants {
+
+    // A measure of the distance from an alliance wall to the nearest edge of the charge station. (In inches)
+    public static final double chargeStationDistance = 60.69;
+
+  }
+
   public static class OperatorConstants {
     public static final int joyLeftPort = 0;
     public static final int joyRightPort = 1;

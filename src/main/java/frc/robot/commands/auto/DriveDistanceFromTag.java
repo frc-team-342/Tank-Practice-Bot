@@ -6,17 +6,18 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSystem;
+import frc.robot.Limelight;
 
-public class ManualDrive extends CommandBase {
+public class DriveDistanceFromTag extends CommandBase {
 
   private DriveSystem drive;
-  private double velocity;
+  private Limelight limelight;
 
-  /** Creates a new ManualDrive. */
-  public ManualDrive(DriveSystem drive, double velocity) {
+  /** Creates a new DriveDistanceFromTag. */
+  public DriveDistanceFromTag(DriveSystem drive, Limelight limelight, double distance) {
 
-    this.drive = drive;
-    this.velocity = velocity;
+    drive = new DriveSystem();
+    limelight = new Limelight();
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drive);
@@ -30,16 +31,13 @@ public class ManualDrive extends CommandBase {
   @Override
   public void execute() {
 
-    drive.drive(velocity, velocity);
+    limelight.getHorizontalDistance();
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    
-    drive.drive(0,0);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

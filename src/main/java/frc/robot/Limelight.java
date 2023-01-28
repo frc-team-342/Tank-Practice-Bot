@@ -8,7 +8,7 @@ import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import static frc.robot.Constants.LimelightConstants.*;
 
-class Limelight implements Sendable {
+public class Limelight implements Sendable {
 
 
     /*
@@ -166,10 +166,10 @@ class Limelight implements Sendable {
 
     }
 
-    public Transform2d createTransform2D(Translation2d constructorTranslation2d, Rotation2d constructorRotation2d) {
         /*
          * Uses a translation2d & a rotation2d parameter to construct a transform2d, then returns it
          */
+    public Transform2d createTransform2D(Translation2d constructorTranslation2d, Rotation2d constructorRotation2d) {
         return new Transform2d(constructorTranslation2d, constructorRotation2d);
 
     }

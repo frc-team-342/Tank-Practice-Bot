@@ -7,8 +7,8 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.DriveWithJoysticks;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.Auto.ManualDrive;
-import frc.robot.commands.Auto.TimedDrive;
+import frc.robot.commands.auto.ManualDrive;
+import frc.robot.commands.auto.TimedDrive;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.Joystick;
@@ -41,7 +41,7 @@ public class RobotContainer {
 
   private Command rotateRobot;
 
-  private Command timedDriveCommand;
+  private TimedDrive timedDriveCommand;
   private TimedDrive timedDrive;
 
   private ManualDrive manualDriveCommand;
@@ -68,13 +68,12 @@ public class RobotContainer {
     autoLevel = new RepeatCommand(drive.autoBalance());
     
     timedDriveCommand = new TimedDrive(drive, Constants.OperatorConstants.PERCENT, Constants.OperatorConstants.SECS);
-<<<<<<< HEAD
+
 
     togglePipline = new InstantCommand(limelight::togglePipeline);
     togglePipelineButton = new JoystickButton(leftJoy, 5);
-=======
+
     rotateRobot = new RepeatCommand(drive.rotateAngle(30));
->>>>>>> ac5dfae748ed0655c3dddb179a4f2cb4db1cef74
 
     SmartDashboard.putData(drive);
     SmartDashboard.putData(limelight);

@@ -55,8 +55,47 @@ public class DriveSystem extends SubsystemBase {
     drive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
 
     speedMultiplier = 0.8;
-  }
 
+    
+  }
+      public CommandBase rotateAngle(double desiredAngle) {
+    return runEnd(
+      ()-> {
+        double currentAngle = navX.getYaw();
+
+        double maxPercentOutput = 0.85;
+
+        double speed = (currentAngle / desiredAngle) * maxPercentOutput; 
+
+        if (speed > 1) {
+          speed = 1;
+        }
+        
+        if (speed < -1) {
+          speed = -1;
+        }
+
+        double tolerance = desiredAngle + 3;
+
+        System.out.println("Angle: " + currentAngle);
+        System.out.println("Speed: " + speed);
+
+        if (currentAngle < tolerance && currentAngle > -tolerance) {
+            drive(0, 0);
+            isBalanced = true;
+        } 
+        else {
+          drive(speed, -speed);
+        }
+
+      },
+       () -> {
+        drive(0, 0);
+
+       });
+
+      }
+    
   public void drive(double leftSpeed, double rightSpeed){
 
     double leftVelocity = leftSpeed * speedMultiplier;

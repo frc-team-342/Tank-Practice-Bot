@@ -59,10 +59,8 @@ public class RobotContainer {
     drive.setDefaultCommand(driveWithJoysticks);
 
     autoLevel = new RepeatCommand(drive.autoBalance());
+    
     timedDriveCommand = new TimedDrive(drive, Constants.OperatorConstants.PERCENT, Constants.OperatorConstants.SECS);
-
-    manualDriveCommand = new ManualDrive(drive, 0.8);
-
     rotateRobot = new RepeatCommand(drive.rotateAngle(30));
 
     SmartDashboard.putData(drive);

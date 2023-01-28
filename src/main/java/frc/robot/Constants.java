@@ -21,5 +21,18 @@ public final class Constants {
     public static final int AUTO_LEVEL_BUTTON = 1;
     public static final double PERCENT = 0.75;
     public static final double SECS = 3;
+
   }
+
+  public static class LimelightConstants {
+
+    public static final double HEIGHT_TO_HIGH = 0;
+    public static final double HEIGHT_TO_LOW = 0;
+    public static final double HEIGHT_TO_MED = 0;
+    public static final double MAX_VERT_OFFSET_FOR_LOW = 30.0;
+    public static final double MAX_VERT_OFFSET_FOR_MED = 60.0;
+    public static final double MAX_VERT_OFFSET_FOR_HIGH = 90.0;
+    
+    }
+
 }

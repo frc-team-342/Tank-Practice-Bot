@@ -118,9 +118,10 @@ public class DriveSystem extends SubsystemBase {
     );
   }
 
-  public void rotateToAngle() {
+  public void rotateToAngle(double desiredAngle) {
 
-
+    double angle = -navX.getAngle();
+    
 
   }
 

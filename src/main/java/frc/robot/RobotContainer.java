@@ -34,6 +34,8 @@ public class RobotContainer {
 
   private Command autoLevel;
 
+  private Command rotateRobot;
+
   private Command timedDriveCommand;
   private TimedDrive timedDrive;
 
@@ -59,6 +61,9 @@ public class RobotContainer {
     autoLevel = new RepeatCommand(drive.autoBalance());
     timedDriveCommand = new TimedDrive(drive, Constants.OperatorConstants.PERCENT, Constants.OperatorConstants.SECS);
 
+    manualDriveCommand = new ManualDrive(drive, 0.8);
+
+    rotateRobot = new RepeatCommand(drive.rotateAngle(30));
 
     SmartDashboard.putData(drive);
 
@@ -87,7 +92,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     SequentialCommandGroup commandGroupAuto = 
     new SequentialCommandGroup(
-      timedDriveCommand, 
+      rotateRobot.withTimeout(5), 
       autoLevel.
       withTimeout(10).
       until(() -> drive.balanced()));

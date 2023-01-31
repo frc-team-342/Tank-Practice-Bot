@@ -7,8 +7,8 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.DriveWithJoysticks;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.ManualDrive;
-import frc.robot.commands.TimedDrive;
+import frc.robot.commands.auto.ManualDrive;
+import frc.robot.commands.auto.TimedDrive;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.Joystick;
@@ -30,13 +30,18 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   
   private DriveSystem drive;
+  private Limelight limelight;
+
   private DriveWithJoysticks driveWithJoysticks;
 
   private Command autoLevel;
+  
+  private InstantCommand togglePipline;
+  private JoystickButton togglePipelineButton;
 
   private Command rotateRobot;
 
-  private Command timedDriveCommand;
+  private TimedDrive timedDriveCommand;
   private TimedDrive timedDrive;
 
   private ManualDrive manualDriveCommand;
@@ -50,6 +55,8 @@ public class RobotContainer {
   public RobotContainer() {
 
     drive = new DriveSystem();
+    limelight = new Limelight();
+
     leftJoy = new Joystick(Constants.OperatorConstants.joyLeftPort);
     rightJoy = new Joystick(Constants.OperatorConstants.joyRightPort);
 
@@ -63,12 +70,13 @@ public class RobotContainer {
     timedDriveCommand = new TimedDrive(drive, Constants.OperatorConstants.PERCENT, Constants.OperatorConstants.SECS);
 
 
-    //togglePipline = new InstantCommand(limelight::togglePipeline);
-    //togglePipelineButton = new JoystickButton(leftJoy, 5);
-    drive.resetYaw();
+    togglePipline = new InstantCommand(limelight::togglePipeline);
+    togglePipelineButton = new JoystickButton(leftJoy, 5);
+
     rotateRobot = new RepeatCommand(drive.rotateAngle(30));
 
     SmartDashboard.putData(drive);
+    SmartDashboard.putData(limelight);
 
     // Configure the trigger bindings
     configureBindings();
@@ -85,6 +93,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
       trigger.whileTrue(autoLevel);
+      togglePipelineButton.whileTrue(togglePipline);
   }
 
   /**

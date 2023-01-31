@@ -101,8 +101,8 @@ public class DriveSystem extends SubsystemBase {
        );
 
 
-      }
-    
+  }
+
   public void drive(double leftSpeed, double rightSpeed){
 
     double leftVelocity = leftSpeed * speedMultiplier;
@@ -161,12 +161,6 @@ public class DriveSystem extends SubsystemBase {
       }
 
     );
-  }
-
-  public void rotateToAngle() {
-
-
-
   }
 
   @Override

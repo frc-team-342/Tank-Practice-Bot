@@ -56,43 +56,50 @@ public class DriveSystem extends SubsystemBase {
 
     speedMultiplier = 0.8;
 
+    navX.zeroYaw();
+
     
   }
       public CommandBase rotateAngle(double desiredAngle) {
-    return runEnd(
+    return runOnce(
       ()-> {
+  
         double currentAngle = navX.getYaw();
+
+        String desiredDirection = ((desiredAngle-currentAngle) + 360) % 360 > 180 ? "Left" : "Right";
 
         double maxPercentOutput = 0.85;
 
-        double speed = (currentAngle / desiredAngle) * maxPercentOutput; 
+        double tolerance = 3;
 
-        if (speed > 1) {
-          speed = 1;
-        }
+        double speed = ((desiredAngle - currentAngle) / desiredAngle) * maxPercentOutput;
+        speed = MathUtil.clamp(speed, -1.0, 1.0);
+
+        // if (speed > 1) {
+        //   speed = 1;
+        // }
         
-        if (speed < -1) {
-          speed = -1;
-        }
-
-        double tolerance = desiredAngle + 3;
+        // if (speed < -1) {
+        //   speed = -1; 
+        // }
 
         System.out.println("Angle: " + currentAngle);
         System.out.println("Speed: " + speed);
+        System.out.println("Desired angle: " + desiredAngle);
 
-        if (currentAngle < tolerance && currentAngle > -tolerance) {
+        if (currentAngle < desiredAngle + tolerance && currentAngle >  desiredAngle - tolerance) {
             drive(0, 0);
-            isBalanced = true;
         } 
-        else {
+        else if (desiredDirection.equals("Left")){
           drive(speed, -speed);
         }
+        else if(desiredDirection.equals("Right")){
+          drive(-speed, speed);
+         }
 
-      },
-       () -> {
-        drive(0, 0);
+      }
+       );
 
-       });
 
       }
     
@@ -146,7 +153,6 @@ public class DriveSystem extends SubsystemBase {
         else {
           drive(speed, speed);
         }
-
       },
 
       //what it do when it end
@@ -169,8 +175,18 @@ public class DriveSystem extends SubsystemBase {
       "Speed Multiplier", 
       () -> speedMultiplier, 
       (double mult) -> {speedMultiplier = mult;}
+
+      
     );
+
+    builder.addDoubleProperty("Current Angle", () -> navX.getYaw(), null);
   }
+
+  public void resetYaw()
+  {
+    navX.zeroYaw();
+  }
+  
 
   @Override
   public void periodic() {

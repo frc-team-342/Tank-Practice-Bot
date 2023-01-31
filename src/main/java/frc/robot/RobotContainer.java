@@ -61,6 +61,11 @@ public class RobotContainer {
     autoLevel = new RepeatCommand(drive.autoBalance());
     
     timedDriveCommand = new TimedDrive(drive, Constants.OperatorConstants.PERCENT, Constants.OperatorConstants.SECS);
+
+
+    //togglePipline = new InstantCommand(limelight::togglePipeline);
+    //togglePipelineButton = new JoystickButton(leftJoy, 5);
+    drive.resetYaw();
     rotateRobot = new RepeatCommand(drive.rotateAngle(30));
 
     SmartDashboard.putData(drive);
@@ -90,10 +95,12 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     SequentialCommandGroup commandGroupAuto = 
     new SequentialCommandGroup(
-      rotateRobot.withTimeout(5), 
-      autoLevel.
-      withTimeout(10).
-      until(() -> drive.balanced()));
+      rotateRobot
+      // .withTimeout(5)
+      // autoLevel.
+      // withTimeout(10).
+      // until(() -> drive.balanced())
+      );
       
     return commandGroupAuto;
     

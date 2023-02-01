@@ -35,6 +35,8 @@ public class DriveSystem extends SubsystemBase {
   private double speedMultiplier;
   private boolean isBalanced; 
 
+  private static double ramp_rate = 0.3;
+
   /** Creates a new DriveSystem. */
   public DriveSystem() {
 
@@ -47,6 +49,11 @@ public class DriveSystem extends SubsystemBase {
     motorRightOne = new WPI_TalonSRX(3);
     motorRightTwo = new WPI_TalonSRX(4);
     rightMotorGroup = new MotorControllerGroup(motorRightOne, motorRightTwo);
+
+    motorRightOne.configOpenloopRamp(ramp_rate);
+    motorRightTwo.configOpenloopRamp(ramp_rate);
+    motorLeftOne.configOpenloopRamp(ramp_rate);
+    motorLeftTwo.configOpenloopRamp(ramp_rate);
 
     navX = new AHRS();
 
@@ -169,9 +176,12 @@ public class DriveSystem extends SubsystemBase {
       "Speed Multiplier", 
       () -> speedMultiplier, 
       (double mult) -> {speedMultiplier = mult;}
-
-      
     );
+
+    builder.addDoubleProperty(
+      "rampRate", 
+      () -> ramp_rate, 
+      (double rate) -> {ramp_rate = rate;});
 
     builder.addDoubleProperty("Current Angle", () -> navX.getYaw(), null);
   }

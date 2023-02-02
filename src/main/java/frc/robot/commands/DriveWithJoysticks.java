@@ -38,8 +38,8 @@ public class DriveWithJoysticks extends CommandBase {
   @Override
   public void execute() {
 
-    double leftDeadband = MathUtil.applyDeadband(joyLeft.getY(), 0.15);
-    double rightDeadband = MathUtil.applyDeadband(joyRight.getY(), 0.15);
+    double leftDeadband = MathUtil.applyDeadband(joyLeft.getY(), 0.05);
+    double rightDeadband = MathUtil.applyDeadband(joyRight.getY(), 0.05);
 
     drive.drive(leftDeadband, rightDeadband);
     

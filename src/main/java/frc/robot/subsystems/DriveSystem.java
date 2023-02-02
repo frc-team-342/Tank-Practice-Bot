@@ -35,7 +35,7 @@ public class DriveSystem extends SubsystemBase {
   private double speedMultiplier;
   private boolean isBalanced; 
 
-  private static double ramp_rate = 0.3;
+  private double ramp_rate = 0.3;
 
   /** Creates a new DriveSystem. */
   public DriveSystem() {
@@ -181,7 +181,7 @@ public class DriveSystem extends SubsystemBase {
     builder.addDoubleProperty(
       "rampRate", 
       () -> ramp_rate, 
-      (double rate) -> {ramp_rate = rate;});
+      this::setRampRate);
 
     builder.addDoubleProperty("Current Angle", () -> navX.getYaw(), null);
   }
@@ -191,6 +191,13 @@ public class DriveSystem extends SubsystemBase {
     navX.zeroYaw();
   }
   
+  public void setRampRate(double newRate){
+    ramp_rate = newRate;
+    motorRightOne.configOpenloopRamp(ramp_rate);
+    motorRightTwo.configOpenloopRamp(ramp_rate);
+    motorLeftOne.configOpenloopRamp(ramp_rate);
+    motorLeftTwo.configOpenloopRamp(ramp_rate);
+  }
 
   @Override
   public void periodic() {

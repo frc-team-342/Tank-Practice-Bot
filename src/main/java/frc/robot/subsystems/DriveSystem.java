@@ -34,6 +34,7 @@ public class DriveSystem extends SubsystemBase {
 
   private double speedMultiplier;
   private boolean isBalanced; 
+  private boolean atAngle;
 
   private double ramp_rate = 0.3;
 
@@ -63,6 +64,8 @@ public class DriveSystem extends SubsystemBase {
 
     speedMultiplier = 0.8;
 
+    atAngle = false;
+
     navX.zeroYaw();
 
     
@@ -79,16 +82,8 @@ public class DriveSystem extends SubsystemBase {
 
         double tolerance = 3;
 
-        double speed = ((desiredAngle - currentAngle) / desiredAngle) * maxPercentOutput;
-        speed = MathUtil.clamp(speed, -1.0, 1.0);
-
-        // if (speed > 1) {
-        //   speed = 1;
-        // }
-        
-        // if (speed < -1) {
-        //   speed = -1; 
-        // }
+        double speed = (desiredAngle - currentAngle) /20; // desiredAngle) * maxPercentOutput;
+        speed = MathUtil.clamp(speed, -maxPercentOutput, maxPercentOutput);
 
         System.out.println("Angle: " + currentAngle);
         System.out.println("Speed: " + speed);
@@ -96,13 +91,21 @@ public class DriveSystem extends SubsystemBase {
 
         if (currentAngle < desiredAngle + tolerance && currentAngle >  desiredAngle - tolerance) {
             drive(0, 0);
-        } 
-        else if (desiredDirection.equals("Left")){
-          drive(speed, -speed);
+            System.out.println("first condition");
+            atAngle = true;
         }
-        else if(desiredDirection.equals("Right")){
+        else{
           drive(-speed, speed);
-         }
+        }
+      
+        // else if (desiredDirection.equals("Left")){
+        //   drive(-speed, speed);
+        //   System.out.println("second condition");
+        // }
+        // else if(desiredDirection.equals("Right")){
+        //   drive(speed, -speed);
+        //   System.out.println("third condition");
+        //  }
 
       }
        );
@@ -122,6 +125,10 @@ public class DriveSystem extends SubsystemBase {
   public boolean balanced(){
 
     return isBalanced;
+  }
+
+  public boolean atAngle(){
+    return atAngle;
   }
 
   public CommandBase autoBalance(){

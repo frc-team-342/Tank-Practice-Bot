@@ -94,6 +94,10 @@ public class RobotContainer {
       togglePipelineButton.whileTrue(togglePipline);
   }
 
+  public Command getDisablePeriodic(){
+    return new InstantCommand(drive::resetYaw);
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -102,10 +106,13 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     SequentialCommandGroup commandGroupAuto = 
     new SequentialCommandGroup(
-      drive.rotateAngle(135).repeatedly().withTimeout(.5)
-      // .withTimeout(5)
+      drive.rotateAngle(180).repeatedly().until(drive::atAngle)
+      // .withTimeout(5)  
+        // else if (desiredDirection.equals("Left")){
+        //   drive(-speed, speed);
+        //   System.out.prin
       // autoLevel.
-      // withTimeout(10).
+      // withTimeout(10)
       // until(() -> drive.balanced())
       );
       
